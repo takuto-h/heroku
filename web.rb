@@ -8,5 +8,11 @@ get '/' do
 end
 
 get '/nagametter' do
-  Twitter.home_timeline.to_s
+  client = Twitter::Client.new(
+    consumer_key: ENV["CONSUMER_KEY"],
+    consumer_secret: ENV["CONSUMER_SECRET"],
+  )
+  client.search(params[:q]).statuses.map do |tweet|
+    tweet.user.name
+  end.to_s
 end
