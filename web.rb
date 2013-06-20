@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 
 require 'sinatra'
+require 'twitter'
 
 get '/' do
   "Hello, world"
 end
 
-get '/K-4' do
-  "主専攻実験"
+get '/nagametter' do
+  Twitter.home_timeline.to_s
 end
