@@ -17,7 +17,7 @@ jQuery(document).ready(function ($){
     }
     $("#query").attr("disabled", "disabled");
     $("#search").attr("disabled", "disabled");
-    $.getJSON("search", {q: query}, function (images){
+    $.getJSON("/nagametter/search", {q: query}, function (images){
       addImages(images);
       $("#query").removeAttr("disabled");
       $("#search").removeAttr("disabled");
