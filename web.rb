@@ -18,10 +18,16 @@ get '/nagametter/search' do
     consumer_key: ENV["CONSUMER_KEY"],
     consumer_secret: ENV["CONSUMER_SECRET"],
   )
+  results = client.search("#{params[:q]}", {since_id: params[:since_id]})
   profile_image_urls = []
-  client.search("#{params[:q]}").statuses.each do |tweet|
+  results.statuses.each do |tweet|
+    break if tweet.id == params[:since_id]
     profile_image_urls << tweet.user.profile_image_url
   end
+  response = {
+    profile_image_urls: profile_image_urls,
+    max_id: results.max_id,
+  }
   content_type :json
-  profile_image_urls.to_json
+  response.to_json
 end

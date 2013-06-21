@@ -1,4 +1,7 @@
 jQuery(document).ready(function ($){
+
+  var ext_params = null
+  
   $("#search").click(function (event){
     search(query);
   });
@@ -17,8 +20,10 @@ jQuery(document).ready(function ($){
     }
     $("#query").attr("disabled", "disabled");
     $("#search").attr("disabled", "disabled");
-    $.getJSON("/nagametter/search", {q: query}, function (images){
-      addImages(images);
+    var params = $.extend({q: query}, ext_params);
+    $.getJSON("/nagametter/search", params, function (response){
+      ext_params = {since_id: response.max_id};
+      addImages(response.profile_image_urls);
       $("#query").removeAttr("disabled");
       $("#search").removeAttr("disabled");
     });
