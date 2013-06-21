@@ -44,12 +44,12 @@ jQuery(document).ready(function ($){
   function setTimers(){
     var count = 30;
     function countdown(){
-      if (count >= 0) {
+      if (count == 0) {
+        $("#countdown").text("0: Waiting...");
+      }
+      else if (count > 0) {
         $("#countdown").text(count--);
         setTimeout(countdown, 1 * 1000);
-      }
-      else {
-        $("#countdown").text("Waiting...");
       }
     }
     countdown();
