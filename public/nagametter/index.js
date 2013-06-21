@@ -29,7 +29,7 @@ jQuery(document).ready(function ($){
     $.getJSON("/nagametter/search", params, function (response){
       ext_params = {since_id: response.max_id};
       addImages(response.profile_image_urls);
-      setTimers()
+      setTimer()
     });
   }
 
@@ -41,18 +41,18 @@ jQuery(document).ready(function ($){
     $("#images").prepend(p)
   }
 
-  function setTimers(){
+  function setTimer(){
     var count = 30;
     function countdown(){
-      if (count == 0) {
-        $("#countdown").text("0: Waiting...");
-      }
-      else if (count > 0) {
+      if (count > 0) {
         $("#countdown").text(count--);
         setTimeout(countdown, 1 * 1000);
       }
+      else if (count == 0) {
+        $("#countdown").text("0: Waiting...");
+        search();
+      }
     }
     countdown();
-    setTimeout(search, 30 * 1000);
   }
 });
