@@ -18,7 +18,7 @@ get '/nagametter/search' do
     consumer_key: ENV["CONSUMER_KEY"],
     consumer_secret: ENV["CONSUMER_SECRET"],
   )
-  results = client.search("#{params[:q]}", since_id: params[:since_id])
+  results = client.search("#{params[:q]}", since_id: params[:since_id], count: 100)
   profile_image_urls = []
   results.statuses.each do |tweet|
     break if tweet.id == params[:since_id]
