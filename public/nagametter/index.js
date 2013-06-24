@@ -4,7 +4,7 @@ jQuery(document).ready(function ($){
 
   var ctxt = $("#canvas")[0].getContext("2d");
   var canvas_width = 1280;
-  var canvas_height = 360;
+  var canvas_height = 240;
 
   var images = [];
   var image_old_gen = 2;
@@ -15,9 +15,9 @@ jQuery(document).ready(function ($){
   var image_props = {x: 0, y: 0, vx: image_initial_vx, vy: image_initial_vy, gen: 0};
 
   var ext_params = {};
-  
-  $("#canvas").attr("width", canvas_width);
-  $("#canvas").attr("height", canvas_height);
+
+  $(window).resize(resize);
+  resize();
   
   $("#search").click(function (event){
     start();
@@ -30,6 +30,13 @@ jQuery(document).ready(function ($){
     }
   });
 
+  function resize(){
+    var border_width = $("#canvas").outerWidth() - $("#canvas").innerWidth();
+    canvas_width = $("body").width() - border_width;
+    $("#canvas").attr("width", canvas_width);
+    $("#canvas").attr("height", canvas_height);
+  }
+  
   function start(){
     var query = $("#query").val();
     if (query == "") {

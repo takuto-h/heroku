@@ -18,11 +18,11 @@ get '/nagametter/search' do
     consumer_key: ENV["CONSUMER_KEY"],
     consumer_secret: ENV["CONSUMER_SECRET"],
   )
+  options = {result_type: "recent", count: 100}
   if params[:since_id]
-    results = client.search("#{params[:q]}", since_id: params[:since_id], count: 100)
-  else
-    results = client.search("#{params[:q]}", count: 100)
+    options[:since_id] = params[:since_id]
   end
+  results = client.search("#{params[:q]}", options)
   users = []
   results.statuses.each do |tweet|
     if params[:since_id] && tweet.id <= params[:since_id].to_i
