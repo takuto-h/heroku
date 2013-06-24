@@ -1,6 +1,7 @@
 jQuery(document).ready(function ($){
 
-  var ext_params = null
+  var ext_params = null;
+  var interval = 30;
   
   $("#search").click(function (event){
     start();
@@ -29,30 +30,35 @@ jQuery(document).ready(function ($){
     $.getJSON("/nagametter/search", params, function (response){
       ext_params = {since_id: response.max_id};
       addImages(response.profile_image_urls);
-      setTimer()
+      countdown();
     });
   }
 
   function addImages(images){
     var p = $("<p></p>");
-    $.each(images, function (index, image_url){
-      p.append($("<img />", {src: image_url}));
-    });
     $("#images").prepend(p)
+    var index = images.length - 1;
+    function add(){
+      if (index < 0) {
+        return;
+      }
+      p.prepend($("<img />", {src: images[index--]}));
+      setTimeout(add, interval * 1000 / images.length);
+    }
+    add()
   }
 
-  function setTimer(){
-    var count = 30;
-    function countdown(){
-      if (count > 0) {
-        $("#countdown").text(count--);
-        setTimeout(countdown, 1 * 1000);
-      }
-      else if (count == 0) {
+  function countdown(){
+    var count = interval;
+    function down(){
+      if (count == 0) {
         $("#countdown").text("0: Waiting...");
         search();
+        return;
       }
+      $("#countdown").text(count--);
+      setTimeout(down, 1 * 1000);
     }
-    countdown();
+    down();
   }
 });
