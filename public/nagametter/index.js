@@ -136,7 +136,7 @@ jQuery(document).ready(function ($){
       }
       var url =
         "//twitter.com/" + statuses[index].user.screen_name +
-        "/statuses/" + statuses[index].id_str;
+        "/status/" + statuses[index].id_str;
       var a = $("<a></a>", {href: url, target: "_blank"});
       var img = $("<img />", {
         src: statuses[index].user.profile_image_url,
