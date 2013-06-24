@@ -16,7 +16,7 @@ jQuery(document).ready(function ($){
 
   var ext_params = {};
 
-  $(window).resize(resize);
+  $(window).on("load resize", resize);
   resize();
   
   $("#search").click(function (event){
