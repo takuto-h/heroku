@@ -121,26 +121,32 @@ jQuery(document).ready(function ($){
     $.getJSON("/nagametter/search", params, function (response){
       ext_params = {since_id: response.max_id_str};
       update_image_gens();
-      add_images(response.users);
+      add_images(response.statuses);
       countdown();
     });
   }
 
-  function add_images(users){
+  function add_images(statuses){
     var p = $("<p></p>");
     $("#images").prepend(p);
-    var index = users.length - 1;
+    var index = statuses.length - 1;
     function loop(){
       if (index < 0) {
         return;
       }
-      var a = $("<a></a>", {href: "//twitter.com/" + users[index].screen_name});
-      var img = $("<img />", {src: users[index].profile_image_url});
+      var url =
+        "//twitter.com/" + statuses[index].user.screen_name +
+        "/statuses/" + statuses[index].id_str;
+      var a = $("<a></a>", {href: url, target: "_blank"});
+      var img = $("<img />", {
+        src: statuses[index].user.profile_image_url,
+        title: statuses[index].text,
+      });
       a.append(img);
       p.prepend(a);
       images.unshift($.extend({elem: img[0]}, image_props));
       index--;
-      setTimeout(loop, interval * 1000 / users.length);
+      setTimeout(loop, interval * 1000 / statuses.length);
     }
     loop();
   }

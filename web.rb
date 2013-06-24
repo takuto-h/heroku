@@ -23,7 +23,7 @@ get '/nagametter/search' do
     options[:since_id] = params[:since_id]
   end
   result = client.search("#{params[:q]}", options)
-  users = []
+  statuses = []
   result.statuses.each do |tweet|
     if params[:since_id] && tweet.id <= params[:since_id].to_i
       break
@@ -31,12 +31,16 @@ get '/nagametter/search' do
     if params[:since_time] && tweet.created_at < Time.at(params[:since_time].to_i / 1000)
       break
     end
-    users << {
-      screen_name: tweet.user.screen_name,
-      profile_image_url: tweet.user.profile_image_url,
+    statuses << {
+      id_str: tweet.id.to_s,
+      text: tweet.full_text,
+      user: {
+        screen_name: tweet.user.screen_name,
+        profile_image_url: tweet.user.profile_image_url,
+      },
     }
   end
-  response = {users: users, max_id_str: result.max_id.to_s}
+  response = {statuses: statuses, max_id_str: result.max_id.to_s}
   content_type :json
   response.to_json
 end
