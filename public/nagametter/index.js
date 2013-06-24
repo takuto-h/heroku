@@ -38,6 +38,7 @@ jQuery(document).ready(function ($){
     $("#query").attr("disabled", "disabled");
     $("#search").attr("disabled", "disabled");
     start_animation();
+    ext_params = {since_time: $.now() - interval * 2 * 1000};
     search();
   }
   
@@ -126,9 +127,9 @@ jQuery(document).ready(function ($){
       if (index < 0) {
         return;
       }
-      var image = $("<img />", {src: image_urls[index--]});
-      p.prepend(image);
-      images.unshift($.extend({elem: image[0]}, image_props));
+      var img = $("<img />", {src: image_urls[index--]});
+      p.prepend(img);
+      images.unshift($.extend({elem: img[0]}, image_props));
       setTimeout(loop, interval * 1000 / image_urls.length);
     }
     loop();
