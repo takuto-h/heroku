@@ -119,7 +119,7 @@ jQuery(document).ready(function ($){
     var query = $("#query").val();
     var params = $.extend({q: query}, ext_params);
     $.getJSON("/nagametter/search", params, function (response){
-      ext_params = {since_id: response.max_id};
+      ext_params = {since_id: response.max_id_str};
       update_image_gens();
       add_images(response.users);
       countdown();

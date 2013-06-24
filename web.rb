@@ -22,9 +22,9 @@ get '/nagametter/search' do
   if params[:since_id]
     options[:since_id] = params[:since_id]
   end
-  results = client.search("#{params[:q]}", options)
+  result = client.search("#{params[:q]}", options)
   users = []
-  results.statuses.each do |tweet|
+  result.statuses.each do |tweet|
     if params[:since_id] && tweet.id <= params[:since_id].to_i
       break
     end
@@ -36,10 +36,7 @@ get '/nagametter/search' do
       profile_image_url: tweet.user.profile_image_url,
     }
   end
-  response = {
-    users: users,
-    max_id: results.max_id,
-  }
+  response = {users: users, max_id_str: result.max_id.to_s}
   content_type :json
   response.to_json
 end
