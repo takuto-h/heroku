@@ -129,22 +129,21 @@ jQuery(document).ready(function ($){
   function add_images(statuses){
     var p = $("<p></p>");
     $("#images").prepend(p);
+    var img_elems = []
+    $.each(statuses.reverse(), function (index, status){
+      var url = "//twitter.com/" + status.user.screen_name + "/status/" + status.id_str;
+      var a = $("<a></a>", {href: url, target: "_blank"});
+      var img = $("<img />", {src: status.user.profile_image_url, title: status.text});
+      img_elems.unshift(img[0])
+      a.append(img);
+      p.prepend(a);
+    });
     var index = statuses.length - 1;
     function loop(){
       if (index < 0) {
         return;
       }
-      var url =
-        "//twitter.com/" + statuses[index].user.screen_name +
-        "/status/" + statuses[index].id_str;
-      var a = $("<a></a>", {href: url, target: "_blank"});
-      var img = $("<img />", {
-        src: statuses[index].user.profile_image_url,
-        title: statuses[index].text,
-      });
-      a.append(img);
-      p.prepend(a);
-      images.unshift($.extend({elem: img[0]}, image_props));
+      images.unshift($.extend({elem: img_elems[index]}, image_props));
       index--;
       setTimeout(loop, interval * 1000 / statuses.length);
     }
